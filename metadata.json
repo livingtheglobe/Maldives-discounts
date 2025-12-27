@@ -1,0 +1,5 @@
+{
+  "name": "Maldives Hotels Quote Engine",
+  "description": "A professional hotel quote and invoice generator for Maldives properties, featuring direct rate calculations, seasonal logic, and PDF generation.",
+  "requestFramePermissions": []
+}

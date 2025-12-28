@@ -1,3 +1,4 @@
+
 import React, { useState, useMemo, useEffect, useRef } from 'react';
 import { Users, MapPin, Building2, RotateCcw, Plus, Minus, Trash2 } from 'lucide-react';
 import { RoomConfig, Hotel } from '../types';
@@ -40,7 +41,14 @@ export const SearchHero: React.FC<SearchHeroProps> = ({ hotels, atoll, setAtoll,
     if (delta > 0 && adults.length < 10) {
       room.guests.push({ id: Math.random().toString(), type: 'adult', age: 30 });
     } else if (delta < 0 && adults.length > 1) {
-      const idx = room.guests.findLastIndex(g => g.type === 'adult');
+      // Manual implementation of findLastIndex for compatibility with older environments (pre-ES2023)
+      let idx = -1;
+      for (let i = room.guests.length - 1; i >= 0; i--) {
+        if (room.guests[i].type === 'adult') {
+          idx = i;
+          break;
+        }
+      }
       if (idx !== -1) room.guests.splice(idx, 1);
     }
     setRooms(newRooms);
@@ -54,7 +62,14 @@ export const SearchHero: React.FC<SearchHeroProps> = ({ hotels, atoll, setAtoll,
       // Set initial age to null to force user selection
       room.guests.push({ id: Math.random().toString(), type: 'child', age: null });
     } else if (delta < 0 && children.length > 0) {
-      const idx = room.guests.findLastIndex(g => g.type !== 'adult');
+      // Manual implementation of findLastIndex for compatibility with older environments (pre-ES2023)
+      let idx = -1;
+      for (let i = room.guests.length - 1; i >= 0; i--) {
+        if (room.guests[i].type !== 'adult') {
+          idx = i;
+          break;
+        }
+      }
       if (idx !== -1) room.guests.splice(idx, 1);
     }
     setRooms(newRooms);

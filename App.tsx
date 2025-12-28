@@ -564,7 +564,26 @@ const App: React.FC = () => {
                                  <p className="text-[11px] font-bold text-gray-700">Contact the hotel directly:</p>
                                  <div className="space-y-2 flex flex-col items-center">
                                     {selectedHotel.bookingEmail && (
-                                      <div className="w-full flex items-center justify-between gap-2 p-2 bg-gray-50 border border-gray-100 rounded text-[10px] font-bold text-brand-600"><div className="flex items-center gap-2 truncate"><Mail size={12} className="shrink-0 text-brand-400" /><span className="truncate">{selectedHotel.bookingEmail}</span></div><button onClick={() => handleCopy(selectedHotel.bookingEmail!, 'e')} className="text-gray-300 hover:text-brand-500 shrink-0"><Copy size={12} /></button></div>
+                                      <div className="w-full flex items-center justify-between gap-2 p-2 bg-gray-50 border border-gray-100 rounded text-[10px] font-bold text-brand-600">
+                                        <div className="flex items-center gap-2 truncate">
+                                          <Mail size={12} className="shrink-0 text-brand-400" />
+                                          <span className="truncate">{selectedHotel.bookingEmail}</span>
+                                        </div>
+                                        <button onClick={() => handleCopy(selectedHotel.bookingEmail!, 'e')} className="text-gray-300 hover:text-brand-500 shrink-0">
+                                          <Copy size={12} />
+                                        </button>
+                                      </div>
+                                    )}
+                                    {selectedHotel.bookingCC && (
+                                      <div className="w-full flex items-center justify-between gap-2 p-2 bg-gray-50 border border-gray-100 rounded text-[10px] font-bold text-brand-600">
+                                        <div className="flex items-center gap-2 truncate">
+                                          <div className="text-[8px] bg-brand-100 text-brand-700 px-1 rounded mr-1 shrink-0 font-black">CC</div>
+                                          <span className="truncate">{selectedHotel.bookingCC}</span>
+                                        </div>
+                                        <button onClick={() => handleCopy(selectedHotel.bookingCC!, 'cc')} className="text-gray-300 hover:text-brand-500 shrink-0">
+                                          <Copy size={12} />
+                                        </button>
+                                      </div>
                                     )}
                                     {selectedHotel.websiteUrl ? (
                                       <a href={selectedHotel.websiteUrl} target="_blank" rel="noopener noreferrer" className="w-full flex items-center justify-center gap-2 py-2 px-3 bg-blue-50 border border-blue-100 rounded text-[10px] font-bold text-blue-600 hover:bg-blue-100 transition-all shadow-sm"><Globe size={12} className="shrink-0" /><span>Book Direct Online</span><ExternalLink size={10} className="opacity-50" /></a>

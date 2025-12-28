@@ -1,5 +1,6 @@
 
-import { useState, useMemo, useEffect, useRef } from 'react';
+// Add React import to resolve namespace error
+import React, { useState, useMemo, useEffect, useRef } from 'react';
 import { Download, MapPin, Building2, Copy, MessageCircle, Tag, AlertTriangle, Check, User, Mail, X, ExternalLink, Info, Minus, Plus as PlusIcon, CheckCircle2, Cake, Globe } from 'lucide-react';
 import { HOTELS } from './services/hotels';
 import { RoomConfig, TransferOption } from './types';
@@ -520,7 +521,7 @@ const App: React.FC = () => {
                  )}
 
                  <div className="bg-white rounded-lg shadow-sm border border-gray-200 p-5 space-y-6">
-                    <h3 className="text-[10px] font-black text-gray-400 uppercase tracking-[0.2em] border-b border-gray-50 pb-3">How to book</h3>
+                    <h3 className="text-[10px] font-black text-gray-400 uppercase tracking-[0.2em] border-b border-gray-50 pb-3">How to request booking</h3>
                     <div className="space-y-6">
                        {selectedHotel.id === 'luau-beach-fulidhoo' ? (
                          <>
@@ -578,7 +579,7 @@ const App: React.FC = () => {
                            <div className="flex gap-4">
                               <div className="w-5 h-5 rounded-full bg-brand-100 text-brand-600 flex items-center justify-center text-[9px] font-black shrink-0">3</div>
                               <div className="flex-grow space-y-2">
-                                 <p className="text-[11px] font-bold text-gray-700">Copy this template into your email/chat:</p>
+                                 <p className="text-[11px] font-bold text-gray-700">Copy this template to communicate with the hotel:</p>
                                  <div className="bg-gray-50 rounded border border-gray-200 p-2.5 max-h-40 overflow-y-auto relative group shadow-inner">
                                     <pre className="text-[9px] text-gray-400 whitespace-pre-wrap font-sans leading-relaxed">{reachOutTemplate}</pre>
                                     <button onClick={() => handleCopy(reachOutTemplate, 't')} className="absolute top-1.5 right-1.5 p-1.5 bg-white border border-gray-200 rounded text-brand-500 shadow-sm opacity-0 group-hover:opacity-100 transition-opacity"><Copy size={12} /></button>

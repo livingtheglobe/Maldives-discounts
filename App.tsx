@@ -504,7 +504,7 @@ const App: React.FC = () => {
                               </div>
                             </div>
                             <div className="border-t border-gray-100 pt-6 flex justify-between items-end mb-2"><span className="font-bold text-sm text-gray-400 uppercase tracking-widest">Total USD</span><span className="font-black text-3xl text-brand-600">{formatCurrency(quote.grandTotal)}</span></div>
-                            <div className="flex items-start gap-2 p-3 bg-brand-5/50 border border-brand-100 rounded-lg mb-6"><Info size={14} className="text-brand-500 mt-0.5 shrink-0" /><p className="text-[10px] text-brand-700 font-medium italic leading-snug">Suggested rates are estimates and subject to availability at time of confirmation. All taxes are inclusive.</p></div>
+                            <div className="flex items-start gap-2 p-3 bg-brand-5/50 border border-brand-100 rounded-lg mb-6"><Info size={14} className="text-brand-500 mt-0.5 shrink-0" /><p className="text-[10px] text-brand-700 font-medium italic leading-snug">This is an estimated quote based on selected dates and room type. Rates are subject to availability and final confirmation by the hotel at the time of request.</p></div>
                             <button onClick={handleDownloadClick} className="w-full font-black py-4 rounded bg-brand-500 text-white hover:bg-brand-600 transition-all shadow-md uppercase tracking-widest text-xs flex items-center justify-center gap-2"><Download size={16} /> Download Quote PDF</button>
                           </>
                         ) : <div className="text-center py-10 text-gray-300 italic font-bold text-xs uppercase tracking-widest">Select dates...</div>)}
@@ -556,12 +556,12 @@ const App: React.FC = () => {
                          <>
                            <div className="flex gap-4">
                              <div className="w-5 h-5 rounded-full bg-brand-100 text-brand-600 flex items-center justify-center text-[9px] font-black shrink-0">1</div>
-                             <div><p className="text-[11px] font-bold text-gray-700 leading-snug">{hasRates ? "Download the quote PDF." : "Select your travel dates."}</p></div>
+                             <div><p className="text-[11px] font-bold text-gray-700 leading-snug">{hasRates ? "Download your quote PDF & send it to the hotel." : "Select your travel dates."}</p></div>
                            </div>
                            <div className="flex gap-4">
                               <div className="w-5 h-5 rounded-full bg-brand-100 text-brand-600 flex items-center justify-center text-[9px] font-black shrink-0">2</div>
                               <div className="flex-grow space-y-3">
-                                 <p className="text-[11px] font-bold text-gray-700">Contact the hotel directly:</p>
+                                 <p className="text-[11px] font-bold text-gray-700">Contact the hotel directly using the provided contact details below:</p>
                                  <div className="space-y-2 flex flex-col items-center">
                                     {selectedHotel.bookingEmail && (
                                       <div className="w-full flex items-center justify-between gap-2 p-2 bg-gray-50 border border-gray-100 rounded text-[10px] font-bold text-brand-600">
@@ -598,7 +598,7 @@ const App: React.FC = () => {
                            <div className="flex gap-4">
                               <div className="w-5 h-5 rounded-full bg-brand-100 text-brand-600 flex items-center justify-center text-[9px] font-black shrink-0">3</div>
                               <div className="flex-grow space-y-2">
-                                 <p className="text-[11px] font-bold text-gray-700">Copy this template to communicate with the hotel:</p>
+                                 <p className="text-[11px] font-bold text-gray-700">Use the template below to message the hotel to request availability for your travel dates.</p>
                                  <div className="bg-gray-50 rounded border border-gray-200 p-2.5 max-h-40 overflow-y-auto relative group shadow-inner">
                                     <pre className="text-[9px] text-gray-400 whitespace-pre-wrap font-sans leading-relaxed">{reachOutTemplate}</pre>
                                     <button onClick={() => handleCopy(reachOutTemplate, 't')} className="absolute top-1.5 right-1.5 p-1.5 bg-white border border-gray-200 rounded text-brand-500 shadow-sm opacity-0 group-hover:opacity-100 transition-opacity"><Copy size={12} /></button>
@@ -619,7 +619,7 @@ const App: React.FC = () => {
         <div className="fixed inset-0 bg-black/60 backdrop-blur-sm z-[60] flex items-center justify-center p-4">
            <div className="bg-white rounded-xl shadow-2xl w-full max-w-lg overflow-hidden animate-fade-in">
               <div className="p-6 bg-brand-500 text-white flex justify-between items-center">
-                 <div><h3 className="text-lg font-bold uppercase tracking-widest">Quote Registration</h3><p className="text-xs text-brand-100 mt-1 opacity-80">Official details for the PDF document.</p></div>
+                 <div><h3 className="text-lg font-bold uppercase tracking-widest">QUOTE DETAILS FOR HOTEL REQUEST</h3><p className="text-xs text-brand-100 mt-1 opacity-80">These details will be added to your quote PDF so the hotel can review and confirm availability. We do not store or use this information. It is only included in your downloadable PDF for hotel communication only.</p></div>
                  <button onClick={() => setShowPdfModal(false)} className="text-white hover:opacity-70 transition-opacity"><X size={20} /></button>
               </div>
               <div className="p-6 space-y-6 max-h-[75vh] overflow-y-auto">
@@ -640,13 +640,13 @@ const App: React.FC = () => {
                        ))}</div>
                  </div>
                  <div className="pt-2 border-t border-gray-100 space-y-4">
-                    <div><label className="block text-[10px] font-black text-gray-400 uppercase mb-2 tracking-widest">Booking Email</label><div className="relative"><Mail size={14} className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-300" /><input type="email" value={customerEmail} onChange={e => setCustomerEmail(e.target.value)} placeholder="hello@example.com" className="w-full pl-10 pr-10 py-2.5 border border-gray-200 rounded-lg text-sm font-bold bg-gray-50 focus:ring-1 focus:ring-brand-500 outline-none transition-all" /></div></div>
-                    <div><label className="block text-[10px] font-black text-gray-400 uppercase mb-2 tracking-widest">Confirm Booking Email</label>
+                    <div><label className="block text-[10px] font-black text-gray-400 uppercase mb-2 tracking-widest">Contact Email (used by the hotel to reply to your request)</label><div className="relative"><Mail size={14} className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-300" /><input type="email" value={customerEmail} onChange={e => setCustomerEmail(e.target.value)} placeholder="hello@example.com" className="w-full pl-10 pr-10 py-2.5 border border-gray-200 rounded-lg text-sm font-bold bg-gray-50 focus:ring-1 focus:ring-brand-500 outline-none transition-all" /></div></div>
+                    <div><label className="block text-[10px] font-black text-gray-400 uppercase mb-2 tracking-widest">Confirm Contact Email</label>
                        <div className="relative"><Mail size={14} className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-300" /><input type="email" value={confirmEmail} onChange={e => setConfirmEmail(e.target.value)} placeholder="Re-enter your email" className={`w-full pl-10 pr-10 py-2.5 border rounded-lg text-sm font-bold bg-gray-50 focus:ring-1 focus:ring-brand-500 outline-none transition-all ${confirmEmail && customerEmail.trim().toLowerCase() !== confirmEmail.trim().toLowerCase() ? 'border-red-300' : 'border-gray-200'}`} /></div>
                        {confirmEmail && customerEmail.trim().toLowerCase() !== confirmEmail.trim().toLowerCase() && <p className="text-[10px] text-red-500 font-bold mt-1 uppercase">Emails do not match.</p>}
                     </div>
                  </div>
-                 <div className="pt-4 flex gap-3"><button onClick={() => setShowPdfModal(false)} className="flex-1 px-4 py-3 rounded text-xs font-black uppercase text-gray-400 hover:bg-gray-50 transition-colors">Cancel</button><button onClick={triggerDownload} disabled={!isModalValid} className={`flex-[2] px-8 py-3 rounded text-white text-xs font-black uppercase shadow-md transition-all ${isModalValid ? 'bg-brand-500 hover:bg-brand-600' : 'bg-gray-300 cursor-not-allowed opacity-50'}`}>Generate PDF</button></div>
+                 <div className="pt-4 flex gap-3"><button onClick={() => setShowPdfModal(false)} className="flex-1 px-4 py-3 rounded text-xs font-black uppercase text-gray-400 hover:bg-gray-50 transition-colors">Cancel</button><button onClick={triggerDownload} disabled={!isModalValid} className={`flex-[2] px-8 py-3 rounded text-white text-xs font-black uppercase shadow-md transition-all ${isModalValid ? 'bg-brand-500 hover:bg-brand-600' : 'bg-gray-300 cursor-not-allowed opacity-50'}`}>Download Quote PDF</button></div>
               </div>
            </div>
         </div>

@@ -28,9 +28,11 @@ export const calculateRoomNightCost = (hotel: Hotel, room: RoomConfig, date: Dat
   if (!season) return 0;
 
   const occupants = room.guests.filter(g => (g.age ?? 30) >= 2).length;
-  const adultsCount = room.guests.filter(g => (g.age ?? 30) >= 12).length;
-  const kidsCount = room.guests.filter(g => (g.age ?? 0) >= 2 && (g.age ?? 0) < 12).length;
-
+  const adultsCount = room.guests.filter(g => {
+    const policy = getPolicy(g.age, hotel.rules.agePolicies);
+    return policy?.name === 'Adult';
+  }).length;
+  
   // 1. Baa Sand Maldives Specific Logic
   if (hotel.id === 'baa-sand-maldives') {
     const adults = room.guests.filter(g => (g.age ?? 30) >= 11).length;
@@ -89,7 +91,6 @@ export const calculateRoomNightCost = (hotel: Hotel, room: RoomConfig, date: Dat
     const isDLX4 = room.roomType === 'Premium Sea View with Balcony';
     const baseType = isDLX4 ? 'Premium Sea View with Balcony' : 'Standard Sea View';
     const occKey = occupants === 1 ? 'Single' : 'Double';
-    const stayKey = totalNights >= 7 ? '7 nights and more' : 'Less than 7 nights';
     // We search the season for the relevant rate
     const baseRate = season.rates[`${baseType} ${occKey}`] || 0;
     let effectiveRate = baseRate;
@@ -135,6 +136,10 @@ export const calculateRoomNightCost = (hotel: Hotel, room: RoomConfig, date: Dat
   // 7. Sands Specific Logic
   if (hotel.id.startsWith('sands-')) {
     const baseRate = season.rates[room.roomType] || 0;
+    const kidsCount = room.guests.filter(g => {
+      const p = getPolicy(g.age, hotel.rules.agePolicies);
+      return p?.name === 'Child';
+    }).length;
     if (kidsCount > 0) {
       // 50% discount logic for extra child
       return baseRate + (kidsCount * (baseRate / 2));
@@ -142,11 +147,39 @@ export const calculateRoomNightCost = (hotel: Hotel, room: RoomConfig, date: Dat
     return baseRate;
   }
 
+  // 8. Lagoon Villa Thoddoo Specific Logic
+  if (hotel.id === 'lagoon-villa-thoddoo') {
+    const baseRate = season.rates[room.roomType] || 0;
+    const stdOcc = room.roomType === 'Deluxe Family Room' ? 3 : 2;
+    let cost = baseRate;
+    
+    // Check if total occupants exceed standard occupancy for the room type
+    if (room.guests.length > stdOcc) {
+      // Sort guests by age descending to fill base occupancy with adults first
+      const sortedGuests = [...room.guests].sort((a, b) => (b.age ?? 30) - (a.age ?? 30));
+      const extraGuests = sortedGuests.slice(stdOcc);
+      
+      extraGuests.forEach(g => {
+        const age = g.age ?? 30;
+        if (age >= 2) {
+          cost += 18; // Extra bed for adult/child
+        } else {
+          cost += 8; // Baby cot for infant
+        }
+      });
+    }
+    return cost;
+  }
+
   // Standard Logic
   const baseRate = season.rates[room.roomType] || 0;
   let cost = occupants === 1 ? baseRate - hotel.rules.singleReduction : baseRate;
   if (occupants > 2) {
     cost += (Math.max(0, adultsCount - 2) * hotel.rules.extraAdultSupplement);
+    const totalKidsCount = room.guests.filter(g => {
+        const p = getPolicy(g.age, hotel.rules.agePolicies);
+        return p?.name !== 'Adult' && (g.age ?? 30) >= 2;
+    }).length;
     cost += (Math.max(0, occupants - Math.max(2, adultsCount)) * hotel.rules.extraChildSupplement);
   }
   return cost;
@@ -211,8 +244,9 @@ export const calculateQuote = (hotel: Hotel, request: QuoteRequest): CostBreakdo
         }
         
         // Meal Plan supplements: Per person per night
-        if (mealPlan && mealPlan.id !== 'bb') {
-          totalMealCost += age >= 12 ? mealPlan.adultSupplement : mealPlan.childSupplement;
+        // Respecting hotel-specific adult/child threshold via policy name
+        if (mealPlan && mealPlan.id !== 'bb' && (policy?.mealChargeable ?? true)) {
+          totalMealCost += (policy?.name === 'Adult') ? mealPlan.adultSupplement : mealPlan.childSupplement;
         }
       });
     }
@@ -222,12 +256,12 @@ export const calculateQuote = (hotel: Hotel, request: QuoteRequest): CostBreakdo
     room.guests.forEach(g => {
       if (!transfer || transfer.id === 'no-transfer') return;
       const age = g.age ?? 30;
+      const policy = getPolicy(age, hotel.rules.agePolicies);
       if (hotel.id === 'ranvilu-rv-thoddoo') {
         const ow = age >= 12 ? 35 : (age >= 3 ? 20 : 0);
         totalTransferCost += (ow * 2);
       } else {
-        const policy = getPolicy(age, hotel.rules.agePolicies);
-        totalTransferCost += age >= 12 ? transfer.adultRate : (policy?.transferChargeable ? transfer.childRate : transfer.infantRate);
+        totalTransferCost += (policy?.name === 'Adult') ? transfer.adultRate : (policy?.transferChargeable ? transfer.childRate : transfer.infantRate);
       }
     });
   });
@@ -238,7 +272,8 @@ export const calculateQuote = (hotel: Hotel, request: QuoteRequest): CostBreakdo
     const occDate = new Date(request.checkIn!.getFullYear(), m - 1, d);
     if (occDate >= request.checkIn! && occDate < request.checkOut!) {
       request.rooms.forEach(r => r.guests.forEach(g => {
-        totalOccasionSupplements += (g.age ?? 30) >= 12 ? occ.adultSupplement : occ.childSupplement;
+        const policy = getPolicy(g.age, hotel.rules.agePolicies);
+        totalOccasionSupplements += (policy?.name === 'Adult') ? occ.adultSupplement : occ.childSupplement;
       }));
     }
   });

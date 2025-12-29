@@ -272,7 +272,7 @@ export const HOTELS: Hotel[] = [
     transfers: [],
     seasons: [
       { name: 'High', from: '2025-12-27', to: '2026-03-31', rates: { 'Standard Room Single': 80, 'Standard Room Double': 100, 'Standard Room Triple': 120, 'Superior Room Single': 90, 'Superior Room Double': 110, 'Superior Room Triple': 130 } },
-      { name: 'Low', from: '2026-04-01', to: '2026-10-31', rates: { 'Standard Room Single': 50, 'Standard Room Double': 60, 'Standard Room Triple': 75, 'Superior Room Single': 60, 'Superior Room Double': 70, 'Superior Room Triple': 85 } }
+      { name: 'Low', from: '2026-04-01', to: '2026-05-31', rates: { 'Standard Room Single': 90, 'Standard Room Double': 100, 'Standard Room Triple': 145, 'Superior Room Single': 105, 'Superior Room Double': 115, 'Superior Room Triple': 160 } }
     ]
   },
   {
@@ -335,11 +335,48 @@ export const HOTELS: Hotel[] = [
       extraChildSupplement: 35, 
       occasions: [{ id: 'xmas', date: '12-24', name: 'Christmas Eve Gala', adultSupplement: 110, childSupplement: 55 }, { id: 'nye', date: '12-31', name: 'New Year Eve Gala', adultSupplement: 110, childSupplement: 55 }] 
     },
-    mealPlans: [{ id: 'bb', name: 'Bed & Breakfast', adultSupplement: 0, childSupplement: 0 }, { id: 'hb', name: 'Half Board', adultSupplement: 28, childSupplement: 0 }, { id: 'fb', name: 'Full Board', adultSupplement: 36, childSupplement: 0 }],
+    mealPlans: [
+      { id: 'bb', name: 'Bed & Breakfast', adultSupplement: 0, childSupplement: 0 }, 
+      { id: 'hb', name: 'Half Board', adultSupplement: 28, childSupplement: 14 }, 
+      { id: 'fb', name: 'Full Board', adultSupplement: 36, childSupplement: 18 } 
+    ],
     transfers: [{ id: 'speedboat-rt', name: 'Speedboat RT', adultRate: 130, childRate: 80, infantRate: 0 }, { id: 'seaplane-ow', name: 'Seaplane One Way', adultRate: 205, childRate: 123, infantRate: 0 }],
     seasons: [
       { name: 'High', from: '2026-01-11', to: '2026-03-31', rates: { 'Ocean View Room': 222, 'Standard Room': 124, 'Deluxe Room': 154, 'Super Deluxe Room': 171, 'Super Deluxe Plus': 191, 'Garden Villa Room': 191 } },
       { name: 'Low', from: '2026-04-01', to: '2026-08-31', rates: { 'Ocean View Room': 184, 'Standard Room': 103, 'Deluxe Room': 132, 'Super Deluxe Room': 136, 'Super Deluxe Plus': 155, 'Garden Villa Room': 155 } }
+    ]
+  },
+  {
+    id: 'lagoon-villa-thoddoo',
+    name: 'Lagoon Villa Thoddoo',
+    island: 'Thoddoo Island',
+    atoll: 'North Ari Atoll',
+    logoUrl: 'https://cdn.shopify.com/s/files/1/0942/5666/0784/files/Lagoon_Villa_thoddoo.png?v=1767028309',
+    roomTypes: ['Deluxe Double Room', 'Deluxe Family Room'],
+    rules: {
+      ...STANDARD_GUESTHOUSE_RULES,
+      serviceChargePercent: 0, // Set to 0 to treat rates as net
+      tgstPercent: 0,          // Set to 0 to treat rates as net
+      extraAdultSupplement: 18,
+      extraChildSupplement: 18,
+      agePolicies: [
+        { name: "Infant", minAge: 0, maxAge: 1.99, greenTax: true, transferChargeable: false, mealChargeable: false, bedChargeable: true },
+        { name: "Child", minAge: 2, maxAge: 9.99, greenTax: true, transferChargeable: true, mealChargeable: true, bedChargeable: true },
+        { name: "Adult", minAge: 10, maxAge: 99, greenTax: true, transferChargeable: true, mealChargeable: true, bedChargeable: true }
+      ]
+    },
+    mealPlans: [
+      { id: 'bb', name: 'Bed & Breakfast', adultSupplement: 0, childSupplement: 0 },
+      { id: 'hb', name: 'Half Board', adultSupplement: 19, childSupplement: 8 },
+      { id: 'fb', name: 'Full Board', adultSupplement: 38, childSupplement: 16 }
+    ],
+    transfers: [],
+    seasons: [
+      { name: 'High Season (Jan-Apr)', from: '2026-01-01', to: '2026-04-30', rates: { 'Deluxe Double Room': 85, 'Deluxe Family Room': 160 } },
+      { name: 'Low Season (May-Jul)', from: '2026-05-01', to: '2026-07-31', rates: { 'Deluxe Double Room': 70, 'Deluxe Family Room': 110 } },
+      { name: 'Shoulder Season (Aug-Nov)', from: '2026-08-01', to: '2026-11-30', rates: { 'Deluxe Double Room': 75, 'Deluxe Family Room': 120 } },
+      { name: 'High Season (Dec)', from: '2026-12-01', to: '2026-12-30', rates: { 'Deluxe Double Room': 85, 'Deluxe Family Room': 160 } },
+      { name: 'New Year Eve', from: '2026-12-31', to: '2026-12-31', rates: { 'Deluxe Double Room': 95, 'Deluxe Family Room': 175 } }
     ]
   },
   {
